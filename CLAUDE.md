@@ -1,6 +1,9 @@
 # GrillIt Website — Claude Context
 
 Static marketing / support site for the GrillIt iOS app (source: `../grillIt`).
+Published as GitHub repo **GrillIt-Website** with GitHub Pages →
+https://azbarks.github.io/GrillIt-Website — the app's Settings → About links to the site and
+`help.html`, so keep that repo name and `help.html` filename.
 Same structure as the PrayIt (`../prayer_website`) and RememberIt sites — plain HTML + one
 shared `style.css`, no build step, no JavaScript.
 
