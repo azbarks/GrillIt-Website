@@ -26,6 +26,7 @@ shared `style.css`, no build step, no JavaScript.
   Permissions: location (when in use), camera (Take Photo). Photos come through the system
   picker (no library permission). If the app adds any network call or permission, update
   `privacy.html` — and the App Store privacy labels.
-- Help describes: Prepping → Start → Finish, two-grill cooks (Finish on / Move Now),
+- Help describes: Prepping → Start → Finish (+ "Forgot to Finish? Enter Cook Time" /
+  "Fix Cook Time" / "Set Finish by Cook Time"), two-grill cooks (Finish on / Move Now),
   temperature log, weather, photos (phone size ~100 KB), 1–10 stars, Cook This Again
   (copies count; clears weight), grill order / default grill, backup merge-by-id.
