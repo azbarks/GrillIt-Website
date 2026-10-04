@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrillIt</title>
+<meta name="description" content="A cook log for your backyard grills. Log every cook — the meat, the setup, the weather, temperature checks, how long it took, and what to do differently next time.">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── Hero ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 60px;
+  align-items: center;
+  padding: 80px 0 72px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--ember-pale);
+  color: var(--ember);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 22px;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 22px;
+  color: var(--ink);
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--ember);
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--ink-muted);
+  max-width: 46ch;
+  margin-bottom: 36px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-soon {
+  background: var(--ember-pale);
+  color: var(--ember);
+  border: 1.5px solid var(--ember);
+  cursor: default;
+}
+.btn-soon:hover { transform: none; box-shadow: none; }
+
+.hero-phone {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.phone-frame {
+  width: 240px;
+  background: var(--nav-bg);
+  border-radius: 38px;
+  border: 6px solid rgba(255,255,255,.12);
+  box-shadow: 0 30px 80px rgba(16,26,40,.32), 0 0 0 1px rgba(255,255,255,.04);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-notch {
+  width: 80px;
+  height: 26px;
+  background: var(--nav-bg);
+  border-radius: 0 0 16px 16px;
+  align-self: center;
+  margin-top: -1px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* The mock screen is always light, like the app in light mode. */
+.phone-screen {
+  flex: 1;
+  background: #F2F2F7;
+  padding: 14px 12px 18px;
+  overflow: hidden;
+}
+
+.mock-title {
+  font-family: system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+.mock-list {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.mock-row {
+  display: flex;
+  gap: 9px;
+  padding: 9px 10px;
+  border-bottom: 1px solid #ECECEF;
+  align-items: center;
+}
+.mock-row:last-child { border-bottom: none; }
+
+.mock-thumb {
+  width: 34px; height: 34px;
+  border-radius: 7px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+}
+.thumb-a { background: linear-gradient(135deg, #7A3A1A, #C4672A); }
+.thumb-b { background: linear-gradient(135deg, #B07A2A, #E8B860); }
+.thumb-c { background: linear-gradient(135deg, #4A2412, #8E4A22); }
+
+.mock-body { flex: 1; min-width: 0; }
+.mock-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.mock-meat {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #111;
+  white-space: nowrap;
+}
+.mock-pill {
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+.pill-cooking  { background: #FDEBD9; color: #E07B1F; }
+.pill-prepping { background: #ECECEF; color: #8A8A90; }
+.mock-score {
+  margin-left: auto;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #333;
+  white-space: nowrap;
+}
+.mock-score::before { content: '★ '; color: #F5B400; }
+.mock-sub {
+  font-size: 10.5px;
+  color: #8A8A90;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mock-meta {
+  font-size: 9.5px;
+  color: #8A8A90;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Trust bar ── */
+.trust-bar {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .9rem;
+  color: var(--ink-muted);
+  font-weight: 500;
+}
+.trust-icon { font-size: 1.2rem; }
+
+/* ── Features ── */
+.features { padding: 80px 0 0; }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+.feature-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+.icon-ember { background: var(--ember-pale); }
+.icon-flame { background: var(--flame-light); }
+
+.feature-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+.feature-card p {
+  font-size: .92rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
+/* ── How it works ── */
+.how {
+  padding: 80px 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.how-steps { display: flex; flex-direction: column; gap: 28px; }
+.step {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.step-num {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--ember);
+  color: white;
+  font-weight: 700;
+  font-size: .9rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-body h4 { font-size: 1rem; margin-bottom: 4px; }
+.step-body p  { font-size: .9rem; color: var(--ink-muted); max-width: 38ch; }
+
+.how-visual {
+  background: var(--char-deep);
+  border-radius: 16px;
+  height: 340px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.how-visual img {
+  width: 220px;
+  height: 220px;
+  border-radius: 48px;
+  box-shadow: 0 20px 60px rgba(217,102,26,.25);
+}
+
+/* ── iCloud band ── */
+.icloud-band {
+  margin-top: 80px;
+  background: var(--char-deep);
+  border-radius: 16px;
+  padding: 48px 52px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.icloud-band h2 {
+  color: white;
+  font-size: 1.7rem;
+  margin-bottom: 10px;
+}
+.icloud-band p {
+  color: #9AA3B2;
+  font-size: .95rem;
+}
+.icloud-band .btn-primary { white-space: nowrap; }
+
+/* ── Responsive ── */
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; padding-top: 56px; }
+  .hero-phone { display: none; }
+  .how { grid-template-columns: 1fr; }
+  .how-visual { display: none; }
+  .icloud-band { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/icon.png" alt="" class="nav-logo-icon">
+      GrillIt
+    </a>
+    <ul class="nav-links">
+      <li><a href="help.html">Help</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="#download" class="nav-cta">Download</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<div class="page-content">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="hero-tag">
+        <span>📱</span> Coming soon to the App Store
+      </div>
+      <h1>Every cook on every grill, <em>so the next one's better</em></h1>
+      <p class="hero-sub">GrillIt replaces the paper cook log. Add the grills in your backyard, then log each cook — the meat, the setup, the weather, temperature checks, how long it took, and what you'd do differently next time.</p>
+      <div class="hero-actions" id="download">
+        <!-- TODO at release: swap for the real App Store link, like PrayIt's
+             <a href="https://apps.apple.com/us/app/grillit/id…" class="btn btn-primary" target="_blank" rel="noopener">⬇ Download on the App Store</a> -->
+        <span class="btn btn-soon" aria-label="GrillIt is coming soon to the App Store">🔥 Coming soon to the App Store</span>
+        <a href="help.html" class="btn btn-ghost">See how it works</a>
+      </div>
+    </div>
+
+    <div class="hero-phone" aria-hidden="true">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mock-title">Cooks</div>
+          <div class="mock-list">
+            <div class="mock-row">
+              <div class="mock-thumb thumb-a">🥩</div>
+              <div class="mock-body">
+                <div class="mock-top">
+                  <span class="mock-meat">Tri-tip</span>
+                  <span class="mock-pill pill-cooking">Cooking</span>
+                </div>
+                <div class="mock-sub">RecTeq → Weber · Oct 4</div>
+                <div class="mock-meta">🔥 275° · ☀️ 72° Sunny</div>
+              </div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-thumb" style="background:#ECECEF">🥩</div>
+              <div class="mock-body">
+                <div class="mock-top">
+                  <span class="mock-meat">Ribeyes</span>
+                  <span class="mock-pill pill-prepping">Prepping</span>
+                </div>
+                <div class="mock-sub">Weber · Oct 4</div>
+              </div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-thumb thumb-b">🍗</div>
+              <div class="mock-body">
+                <div class="mock-top">
+                  <span class="mock-meat">Chicken tenders</span>
+                  <span class="mock-score">8/10</span>
+                </div>
+                <div class="mock-sub">Blackstone · Oct 2</div>
+                <div class="mock-meta">⏱ 25 min · 🔥 400°</div>
+              </div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-thumb thumb-c">🐖</div>
+              <div class="mock-body">
+                <div class="mock-top">
+                  <span class="mock-meat">Pork butt</span>
+                  <span class="mock-score">9/10</span>
+                </div>
+                <div class="mock-sub">RecTeq · Sep 27</div>
+                <div class="mock-meta">⏱ 11 hr 20 min · 🔥 250°</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <div class="trust-bar">
+    <div class="trust-item"><span class="trust-icon">☁️</span> Syncs across your Apple devices via iCloud</div>
+    <div class="trust-item"><span class="trust-icon">🔒</span> Your log stays in your own iCloud account</div>
+    <div class="trust-item"><span class="trust-icon">🚫</span> No ads. No subscriptions. No tracking.</div>
+    <div class="trust-item"><span class="trust-icon">🍎</span> Requires iOS 17 or later</div>
+  </div>
+
+  <!-- Features -->
+  <section class="features">
+    <p class="eyebrow">What's inside</p>
+    <h2 class="section-title">Everything the paper log had — without the clipboard</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon icon-ember">🍖</div>
+        <h3>Your grills</h3>
+        <p>Add each grill once — kettle, smoker, pellet, griddle — with its fuel type and usual brand. Drag them into order; the one on top is the default for new cooks. Each grill keeps its own history and total time on the grill.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-flame">⏱</div>
+        <h3>Prep, Start, Finish</h3>
+        <p>Fill everything in while you prep — no clock running. Tap <strong>Start Cook</strong> when the meat goes on and <strong>Finish Cook</strong> when it comes off. GrillIt works out exactly how long it took.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-ember">🔀</div>
+        <h3>Two-grill cooks</h3>
+        <p>Start on the pellet grill and finish on the kettle or the griddle? Tap <strong>Move Now</strong> when you switch and GrillIt shows how long it spent on each — handy for learning which grill is slow.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-flame">🌤</div>
+        <h3>Weather, in one tap</h3>
+        <p><strong>Use Current Weather</strong> fills in the air temperature, wind, humidity and sky for where you're standing — the things that quietly change how a cook goes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-ember">🌡</div>
+        <h3>Temperature log</h3>
+        <p>Log grill and meat temps as you go — from an iChef probe or an instant-read — with a quick note: wrapped, added fuel, spritzed. Each check shows how far into the cook it was.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-flame">⭐</div>
+        <h3>Rate it, then do it better</h3>
+        <p>Score each cook from 1 to 10 stars, note how it turned out, and write <strong>notes for next time</strong>. <strong>Cook This Again</strong> copies the whole setup and shows you last time's notes right at the top.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how">
+    <div>
+      <p class="eyebrow">How it works</p>
+      <h2 class="section-title">Set up your grills once, log every cook after</h2>
+      <div class="how-steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Add your grills</h4>
+            <p>Name each one, pick its type and fuel. Put your go-to grill at the top so new cooks start on it.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Log the cook while you prep</h4>
+            <p>Meat, weight or count, rub, sauce, target temps, fuel, smoke wood, thermometer, the weather, and a photo or two.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Start, check, finish</h4>
+            <p>Tap Start when it goes on, log temps as you go, Move if you switch grills, and Finish when it comes off. Then rate it and jot what to change.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="how-visual" aria-hidden="true"><img src="images/icon.png" alt=""></div>
+  </section>
+
+  <!-- iCloud band -->
+  <div class="icloud-band">
+    <div>
+      <h2>Your cook log, always with you</h2>
+      <p>GrillIt syncs across your devices via iCloud. No account to create — just the Apple ID you already use. And a one-file backup is a tap away in Settings.</p>
+    </div>
+    <a href="help.html" class="btn btn-primary">Read the Help</a>
+  </div>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 GrillIt · Built by Bruce Barclay</span>
+    <ul class="footer-links">
+      <li><a href="help.html">Help</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

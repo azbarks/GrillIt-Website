@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help — GrillIt</title>
+<meta name="description" content="How to use GrillIt — adding grills, logging a cook from prep to finish, two-grill cooks, temperature checks, the weather button, photos, ratings, Cook This Again, and backup.">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+.help-hero {
+  padding: 60px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 56px;
+}
+.help-hero h1 { font-size: clamp(2rem, 4vw, 2.8rem); margin-top: .3em; }
+.help-hero p  { font-size: 1.05rem; color: var(--ink-muted); margin-top: .7em; }
+
+.help-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Sidebar */
+.help-sidebar {
+  position: sticky;
+  top: 80px;
+}
+.help-sidebar nav { display: flex; flex-direction: column; gap: 4px; }
+.help-sidebar a {
+  color: var(--ink-muted);
+  font-size: .92rem;
+  font-weight: 500;
+  padding: 7px 12px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  transition: background .12s, color .12s;
+}
+.help-sidebar a:hover,
+.help-sidebar a.active {
+  background: var(--ember-pale);
+  color: var(--ember);
+}
+.help-sidebar .section-group {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: 16px 12px 4px;
+}
+
+/* Content */
+.help-section {
+  margin-bottom: 64px;
+  scroll-margin-top: 80px;
+}
+.help-section h2 {
+  font-size: 1.55rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 28px;
+}
+.help-section h2 .tab-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--ember-pale);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.flame-bg { background: var(--flame-light) !important; }
+
+.help-section h3 {
+  font-size: 1.08rem;
+  margin: 24px 0 8px;
+  color: var(--ink);
+}
+.help-section p {
+  font-size: .96rem;
+  color: var(--ink-muted);
+  line-height: 1.65;
+  max-width: 62ch;
+}
+.help-section ul, .help-section ol {
+  margin: 8px 0 8px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.help-section li {
+  font-size: .95rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* Q&A */
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.faq-item summary {
+  padding: 15px 20px;
+  font-weight: 600;
+  font-size: .97rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  color: var(--ink);
+  user-select: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: '+'; font-size: 1.2rem; color: var(--ember); transition: transform .2s; }
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item[open] summary { border-bottom: 1px solid var(--border); }
+.faq-body {
+  padding: 16px 20px;
+  font-size: .93rem;
+  color: var(--ink-muted);
+  line-height: 1.65;
+  background: var(--ground);
+}
+.faq-body p + p { margin-top: .7em; }
+
+/* Tip box */
+.tip {
+  background: var(--ember-pale);
+  border-left: 3px solid var(--ember);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: .93rem;
+  color: var(--ink);
+}
+.tip strong { color: var(--ember); }
+
+/* Status pills */
+.actions-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 14px 0;
+}
+.action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: .85rem;
+  font-weight: 600;
+  border: 1.5px solid;
+}
+.pill-gray   { border-color: #8A8A90; color: #8A8A90; background: rgba(138,138,144,.10); }
+.pill-orange { border-color: #D97B20; color: #D97B20; background: rgba(217,123,32,.10); }
+.pill-green  { border-color: #2E9E4F; color: #2E9E4F; background: rgba(46,158,79,.10); }
+.arrow { color: var(--ink-muted); font-weight: 700; }
+
+/* Field table */
+.field-table {
+  width: 100%;
+  max-width: 640px;
+  border-collapse: collapse;
+  font-size: .9rem;
+  margin: 16px 0 18px;
+}
+.field-table th {
+  background: var(--ember-pale);
+  color: var(--ember);
+  font-weight: 700;
+  text-align: left;
+  padding: 9px 14px;
+  border-bottom: 2px solid var(--border);
+}
+.field-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-muted);
+  vertical-align: top;
+}
+.field-table td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.field-table tr:last-child td { border-bottom: none; }
+
+@media (max-width: 700px) {
+  .help-layout { grid-template-columns: 1fr; }
+  .help-sidebar { display: none; }
+  .field-table td:first-child { white-space: normal; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/icon.png" alt="" class="nav-logo-icon">
+      GrillIt
+    </a>
+    <ul class="nav-links">
+      <li><a href="help.html" aria-current="page">Help</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="index.html#download" class="nav-cta">Download</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<div class="page-content">
+
+  <div class="help-hero">
+    <p class="eyebrow">Documentation</p>
+    <h1>How to use GrillIt</h1>
+    <p>The three tabs, logging a cook from prep to finish, two-grill cooks, the weather button, photos, and how to back up your log.</p>
+  </div>
+
+  <div class="help-layout">
+
+    <!-- Sidebar -->
+    <aside class="help-sidebar">
+      <nav aria-label="Help sections">
+        <div class="section-group">Start Here</div>
+        <a href="#getting-started">🚀 Getting Started</a>
+        <div class="section-group">Tabs</div>
+        <a href="#cooks">🔥 Cooks</a>
+        <a href="#grills">🍖 Grills</a>
+        <a href="#settings">⚙️ Settings</a>
+        <div class="section-group">Logging a cook</div>
+        <a href="#prep-start-finish">⏱ Prep, Start, Finish</a>
+        <a href="#cook-details">📝 What you can record</a>
+        <a href="#two-grills">🔀 Two-grill cooks</a>
+        <a href="#temps">🌡 Temperature log</a>
+        <a href="#weather">🌤 Weather</a>
+        <a href="#photos">📷 Photos</a>
+        <a href="#results">⭐ Rating &amp; next time</a>
+        <a href="#cook-again">🔁 Cook This Again</a>
+        <div class="section-group">Your data</div>
+        <a href="#backup">💾 Backup &amp; Restore</a>
+        <a href="#faq">❓ FAQ</a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="help-content">
+
+      <!-- Getting Started -->
+      <section class="help-section" id="getting-started">
+        <h2><span class="tab-icon">🚀</span> Getting Started</h2>
+        <p>GrillIt is a cook log. You tell it about the grills in your backyard once, and then every time you fire one up you log the cook — what went on, how you set it up, the weather, how long it took, and how it turned out. Over time it becomes the notebook that tells you why last month's ribs were better than this month's.</p>
+
+        <h3>Your first few minutes in the app</h3>
+        <ol>
+          <li>Go to the <strong>Grills</strong> tab and tap <strong>Add a Grill</strong>. Give it a name, pick its type, and check the fuel type. Do this for each grill you own.</li>
+          <li>If you have more than one, tap <strong>Edit</strong> and drag your go-to grill to the top — it becomes the default for new cooks.</li>
+          <li>Next time you cook, go to the <strong>Cooks</strong> tab, tap <strong>+</strong>, and fill in what you know while you prep. Save it.</li>
+          <li>When the meat goes on, open the cook and tap <strong>Start Cook</strong>. When it comes off, tap <strong>Finish Cook</strong>, rate it, and jot your notes for next time.</li>
+        </ol>
+        <div class="tip"><strong>Everything is optional.</strong> Fill in as much or as little as is useful — a quick weeknight burger log can be two fields.</div>
+      </section>
+
+      <!-- Cooks -->
+      <section class="help-section" id="cooks">
+        <h2><span class="tab-icon">🔥</span> Cooks</h2>
+        <p>Every cook you've logged, newest first. Each row shows the meat, its status, the grill (or grills — "RecTeq → Weber"), the date, how long it took, the grill temperature you set, the weather, its rating, and the first photo if there is one.</p>
+
+        <h3>Adding a cook</h3>
+        <p>Tap <strong>+</strong>. The new cook starts on your default grill (the top one on the Grills tab), and its <em>Fuel</em> is filled in from that grill's fuel type and usual brand. If you've filtered the list to one grill, the new cook starts on that grill instead.</p>
+
+        <h3>Search and filter</h3>
+        <p>Pull down to search by meat, event, rub, sauce, smoke wood, fuel, notes, or grill name. The filter button at the top left shows just one grill's cooks — including ones that started or finished on it.</p>
+
+        <h3>Swipe actions</h3>
+        <ul>
+          <li><strong>Swipe right</strong> on a Prepping cook to <strong>Start</strong> it, or on a Cooking one to <strong>Finish</strong> it — handy when your hands are full at the grill.</li>
+          <li><strong>Swipe left</strong> to <strong>Delete</strong> a cook (its photos go with it).</li>
+        </ul>
+
+        <h3>A cook's page</h3>
+        <p>Tap a cook to see everything about it, laid out like the paper log: the timeline, photos, temperature log, meat and prep, cook setup, weather, and results. Tap <strong>Edit</strong> to change anything — <strong>Cancel</strong> throws away your changes.</p>
+      </section>
+
+      <!-- Grills -->
+      <section class="help-section" id="grills">
+        <h2><span class="tab-icon">🍖</span> Grills</h2>
+        <p>The grills you cook on. Each row shows the grill's type, fuel, model, how many cooks it's had, and when it was last used.</p>
+
+        <h3>Adding a grill</h3>
+        <ul>
+          <li><strong>Name</strong> — whatever you call it ("Big Kettle", "RecTeq", "Blackstone").</li>
+          <li><strong>Type</strong> — Charcoal Kettle, Smoker, Kamado, Gas, Pellet, Griddle, or Other.</li>
+          <li><strong>Fuel type</strong> — Charcoal, Lump Charcoal, Propane, Natural Gas, Pellets, Wood, or Electric. GrillIt suggests one when you pick the type (a Griddle suggests Propane, a Pellet grill suggests Pellets), but you can choose anything.</li>
+          <li><strong>Make / Model</strong> and <strong>Usual brand</strong> (e.g. Kingsford Original) — optional.</li>
+          <li><strong>Notes</strong> — quirks, hot spots, mods, when you bought it.</li>
+        </ul>
+
+        <h3>Your default grill</h3>
+        <p>Tap <strong>Edit</strong> at the top left and drag the ☰ handles to put your grills in any order. The grill at the top is your <strong>default</strong> — it's marked with a Default tag, and every new cook starts on it. New grills are added at the bottom, so adding one never changes your default.</p>
+
+        <h3>A grill's page</h3>
+        <p>Shows the grill's details, how many cooks it's had, its total <strong>time on the grill</strong>, and its full history. <strong>Log a Cook on…</strong> starts a new cook already set to that grill. For a two-grill cook, each grill only counts the time the meat actually spent on it.</p>
+
+        <h3>Deleting a grill</h3>
+        <p>Open the grill, tap <strong>Edit</strong>, then <strong>Delete Grill</strong>. Its cooks stay in your log under the grill's name.</p>
+      </section>
+
+      <!-- Settings -->
+      <section class="help-section" id="settings">
+        <h2><span class="tab-icon flame-bg">⚙️</span> Settings</h2>
+        <h3>Backup &amp; Restore</h3>
+        <p>Export and import a backup of everything — see <a href="#backup">Backup &amp; Restore</a>.</p>
+        <h3>Your Data</h3>
+        <p>How many grills, cooks and photos you have, and your total time on the grill.</p>
+        <h3>Delete All Data</h3>
+        <p>Permanently removes every grill, cook and photo — from this device and, with iCloud on, your other devices too. Export a backup first.</p>
+        <h3>About</h3>
+        <p>The app's version and build number. Include the build number when you <a href="support.html">contact support</a>.</p>
+      </section>
+
+      <!-- Prep, Start, Finish -->
+      <section class="help-section" id="prep-start-finish">
+        <h2><span class="tab-icon">⏱</span> Prep, Start, Finish</h2>
+        <p>Every cook moves through three stages:</p>
+        <div class="actions-row">
+          <span class="action-pill pill-gray">Prepping</span>
+          <span class="arrow">→</span>
+          <span class="action-pill pill-orange">Cooking</span>
+          <span class="arrow">→</span>
+          <span class="action-pill pill-green">Done</span>
+        </div>
+        <ul>
+          <li><strong>Prepping</strong> — a new cook starts here, with no clock running. Fill in the meat, rub, temps, weather and so on at your own pace, and Save. Filling all that in takes a while, so the time you <em>open</em> the form isn't the time the cook started.</li>
+          <li><strong>Start Cook</strong> — tap it on the cook's page (or swipe right on the cook in the list) when the meat goes on. That's when the clock starts. The page then shows how long it's been on the grill.</li>
+          <li><strong>Finish Cook</strong> — tap it (or swipe right) when it comes off. GrillIt records the finish time and shows the total <strong>cook time</strong>.</li>
+        </ul>
+
+        <h3>Fixing times, or logging a cook after the fact</h3>
+        <p>In the cook's <strong>Edit</strong> screen, the <strong>Time</strong> section has a Prepping / Cooking / Done switch with the start and finish times. Use it to correct a time you tapped late, or to log a cook that's already over by choosing <strong>Done</strong> and setting both times.</p>
+      </section>
+
+      <!-- What you can record -->
+      <section class="help-section" id="cook-details">
+        <h2><span class="tab-icon">📝</span> What you can record</h2>
+        <p>The cook form follows the paper BBQ log. Every field is optional.</p>
+        <table class="field-table">
+          <tr><th>Section</th><th>Fields</th></tr>
+          <tr><td>The Cook</td><td>Meat, Grill, Finish on (a second grill), Event</td></tr>
+          <tr><td>Time</td><td>Prepping / Cooking / Done, start and finish times</td></tr>
+          <tr><td>Meat</td><td>Brand / Store, Weight (lbs), Count (pieces — for chicken tenders, wings, burgers), Price per lb, Fresh / Frozen</td></tr>
+          <tr><td>Prep</td><td>Marinade / Rub, Baste / Glaze / Mop / Sauce, Preparation (trimmed, injected, dry brined…)</td></tr>
+          <tr><td>Cook Setup</td><td>Method (Direct, Indirect, Low &amp; Slow Smoke, Reverse Sear, Rotisserie, Griddle, Other), Grill temp you set, Target meat temp, Final meat temp, Thermometer (iChef Probe, Instant-Read, both, or none), Fuel, Smoke wood, How I cooked it</td></tr>
+          <tr><td>Weather</td><td>Sky, Air temp, Wind, Humidity, Weather notes — see <a href="#weather">Weather</a></td></tr>
+          <tr><td>Photos</td><td>See <a href="#photos">Photos</a></td></tr>
+          <tr><td>Before Cooking</td><td>Anything else going in — a new thermometer, a cold start, running late</td></tr>
+          <tr><td>Results</td><td>Rating (1–10 stars), How it turned out, Notes for next time</td></tr>
+        </table>
+        <div class="tip"><strong>Weight or count?</strong> Use whichever makes sense — weight for a brisket, count for a dozen tenders. You can fill in both, or neither.</div>
+      </section>
+
+      <!-- Two-grill cooks -->
+      <section class="help-section" id="two-grills">
+        <h2><span class="tab-icon">🔀</span> Two-grill cooks</h2>
+        <p>Some cooks start on one grill and finish on another — say, a long run on the pellet grill, then onto the kettle or the griddle to finish. GrillIt tracks both grills and how long the meat spent on each.</p>
+
+        <h3>Planning it</h3>
+        <p>In the cook form, set <strong>Grill</strong> to where it starts and <strong>Finish on</strong> to where it ends. (Leave Finish on as <em>Same grill</em> for an ordinary cook.) The cook shows as "RecTeq → Weber" everywhere.</p>
+
+        <h3>Moving it</h3>
+        <p>While the cook is going, its page shows <strong>Move to Weber Now</strong>. Tap it the moment you move the meat — GrillIt stamps the time. Didn't plan a second grill? The page shows <strong>Move to Another Grill</strong> instead, with a list to pick from.</p>
+
+        <h3>What you get</h3>
+        <p>Once it's moved, the cook's page shows the time on each grill separately — for example <em>On RecTeq 2 hr 10 min</em> and <em>On Weber 25 min</em>. The cook appears in both grills' history, and each grill's total time only counts its own share. After a few cooks, it's easy to see which grill runs slow.</p>
+      </section>
+
+      <!-- Temperature log -->
+      <section class="help-section" id="temps">
+        <h2><span class="tab-icon">🌡</span> Temperature log</h2>
+        <p>The cook's page has a <strong>Temperature Log</strong> — the "Cooker Log" page of the paper sheet. Tap <strong>Add Temperature Check</strong> to record:</p>
+        <ul>
+          <li>The time (defaults to now)</li>
+          <li>Grill temperature and/or meat temperature</li>
+          <li>A quick note — vents, wrapped, added fuel, spritzed</li>
+        </ul>
+        <p>Each check shows how far into the cook it was ("+2 hr 15 min"). Swipe left on one to delete it. Record which thermometer you used — your iChef probe, an instant-read for thin cuts, or both — in the cook's <strong>Thermometer</strong> field.</p>
+      </section>
+
+      <!-- Weather -->
+      <section class="help-section" id="weather">
+        <h2><span class="tab-icon flame-bg">🌤</span> Weather</h2>
+        <p>Wind, cold and humidity all change how a cook goes, so each cook has a Weather section: Sky (Sunny, Partly Cloudy, Cloudy, Fog, Rain, Storms, Snow), Air temp, Wind, Humidity, and notes.</p>
+
+        <h3>Use Current Weather</h3>
+        <p>Tap <strong>Use Current Weather</strong> and GrillIt fills in the sky, temperature, wind and humidity for where you are right now. The first time, iOS asks to let GrillIt use your location — only while you're using the app. If you'd rather not, just type the weather in yourself.</p>
+        <div class="tip"><strong>It's the weather right now.</strong> Tap it while you're out at the grill, not when you're editing a cook later. Your exact location isn't saved — only the weather is. See the <a href="privacy.html">Privacy Policy</a> for details.</div>
+      </section>
+
+      <!-- Photos -->
+      <section class="help-section" id="photos">
+        <h2><span class="tab-icon">📷</span> Photos</h2>
+        <p>Add photos while you're logging a cook or any time after from its page:</p>
+        <ul>
+          <li><strong>Add Photos</strong> — pick up to 10 at a time from your library.</li>
+          <li><strong>Take Photo</strong> — use the camera right there.</li>
+        </ul>
+        <p>Tap a photo to see it full screen; swipe between them, share one, or delete it. The first photo appears as a thumbnail on the cook's row.</p>
+        <p>Photos are saved at phone-screen size — about 100 KB each instead of the 2 MB or so a camera photo takes — so a year of cooks uses very little space. Your original stays in your Photos library if it came from there.</p>
+        <div class="tip"><strong>What to shoot:</strong> raw with the rub on, coming off the grill, and sliced. Those three tell you more next time than any note.</div>
+      </section>
+
+      <!-- Results -->
+      <section class="help-section" id="results">
+        <h2><span class="tab-icon flame-bg">⭐</span> Rating &amp; notes for next time</h2>
+        <p>In <strong>Results</strong>, rate the cook from <strong>1 to 10 stars</strong> — tap a star to set it, tap the same star again (or Clear) to remove it. The score shows as ★ 8/10 on the cook's row.</p>
+        <p><strong>How it turned out</strong> is for the bark, smoke ring, tenderness, juiciness and flavor. <strong>Notes for next time</strong> is the one to fill in every time — it's what <a href="#cook-again">Cook This Again</a> shows you before your next cook.</p>
+      </section>
+
+      <!-- Cook This Again -->
+      <section class="help-section" id="cook-again">
+        <h2><span class="tab-icon">🔁</span> Cook This Again</h2>
+        <p>At the bottom of any cook's page, <strong>Cook This Again</strong> starts a new cook with the same setup, in Prepping:</p>
+        <ul>
+          <li><strong>Copied:</strong> grill (and finish grill), meat, count, prep, rub and sauce, method, temperatures you set, thermometer, fuel, and smoke wood.</li>
+          <li><strong>Cleared:</strong> times, weight, price, final meat temp, weather, before-cooking notes, rating, and results.</li>
+        </ul>
+        <p>Last time's <strong>notes for next time</strong> appear at the top of the form, so you see them before you start.</p>
+      </section>
+
+      <!-- Backup -->
+      <section class="help-section" id="backup">
+        <h2><span class="tab-icon flame-bg">💾</span> Backup &amp; Restore</h2>
+        <p>With iCloud on, your log is already synced and safe in your iCloud account. A backup file is an extra copy you control.</p>
+
+        <h3>Export Backup</h3>
+        <p><strong>Settings → Export Backup</strong> saves one file — every grill, cook and photo — named like <code>2026-10-04_1830_GrillIt_Backup.json</code>. Save it to Files, Dropbox, or email it to yourself. Because photos are inside it, the file grows as you add them (a year of cooks with a few photos each is typically a few tens of MB).</p>
+
+        <h3>Import Backup</h3>
+        <p><strong>Settings → Import Backup</strong> and pick a backup file. Import <strong>merges</strong> with what you already have: grills and cooks already in the app are updated from the file, new ones are added, and nothing is ever deleted. Importing the same file twice is safe. Backups from older versions of GrillIt still restore.</p>
+        <div class="tip"><strong>A good habit:</strong> export a backup every month or two and keep the latest one.</div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="help-section" id="faq">
+        <h2><span class="tab-icon">❓</span> FAQ</h2>
+
+        <details class="faq-item">
+          <summary>I opened a new cook a while ago — why isn't the start time right?</summary>
+          <div class="faq-body">
+            <p>It doesn't have one yet. New cooks start in <strong>Prepping</strong> with no clock, so you can take your time filling things in. The start time is stamped when you tap <strong>Start Cook</strong>. If you forgot to tap it, open the cook, tap Edit, and fix the time in the Time section.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Should a start-on-one-grill, finish-on-another cook be called a reverse sear?</summary>
+          <div class="faq-body">
+            <p>Not necessarily — use <strong>Finish on</strong> for any cook that moves between grills, and pick whatever Method fits. Reverse Sear is there for when it really is one. The two-grill tracking works either way.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why does a new cook start on the wrong grill?</summary>
+          <div class="faq-body">
+            <p>New cooks start on the grill at the top of the Grills tab. Tap <strong>Edit</strong> there and drag the one you use most to the top. (If you've filtered the Cooks list to a grill, new cooks start on that grill instead.)</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Use Current Weather says it can't get my location.</summary>
+          <div class="faq-body">
+            <p>Location may be off for GrillIt. Go to <strong>Settings → GrillIt → Location</strong> on your iPhone and choose <em>While Using the App</em>. You can always type the weather in instead.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Does GrillIt work without iCloud?</summary>
+          <div class="faq-body">
+            <p>Yes. Everything is stored on the device whether or not iCloud is on — you just won't get sync to your other devices. If you're not using iCloud, export a backup now and then so you have a copy.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can I use it on my iPad?</summary>
+          <div class="faq-body">
+            <p>Yes. GrillIt is built for iPhone and runs on iPad, and iCloud keeps your log in sync between them — log the cook on your phone at the grill, look back on the iPad.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>I deleted a grill. Where did its cooks go?</summary>
+          <div class="faq-body">
+            <p>They're still in the Cooks tab, under the grill's old name. Deleting a grill never deletes its cooks.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do I report a bug or ask for a feature?</summary>
+          <div class="faq-body">
+            <p>Head to the <a href="support.html">Support page</a> and send an email. Include your build number (Settings → About) and what you expected versus what happened.</p>
+          </div>
+        </details>
+
+      </section>
+
+    </div><!-- /help-content -->
+  </div><!-- /help-layout -->
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 GrillIt · Built by Bruce Barclay</span>
+    <ul class="footer-links">
+      <li><a href="help.html">Help</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

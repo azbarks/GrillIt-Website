@@ -1,0 +1,251 @@
+/* GrillIt — shared stylesheet
+   Same layout system as the PrayIt / RememberIt sites; colors from the GrillIt icon
+   (charcoal-navy background, ember-orange coals). */
+
+@import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,500;0,700;0,800;1,500&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+
+/* ── Tokens ── */
+:root {
+  --ink:         #1C1A17;
+  --ink-muted:   #6B6158;
+  --char-deep:   #101A28;   /* icon background */
+  --ember:       #D9661A;   /* app accent */
+  --ember-pale:  #FBEBDD;
+  --flame:       #E8A23A;   /* hot-coal highlight */
+  --flame-light: #FBF0DA;
+  --ground:      #F8F5F0;
+  --surface:     #FFFFFF;
+  --border:      #ECE3D8;
+  --nav-bg:      #101A28;
+  --nav-text:    #C4CAD4;
+  --radius:      10px;
+  --shadow:      0 2px 12px rgba(16,26,40,.10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink:         #F2ECE4;
+    --ink-muted:   #A99E92;
+    --char-deep:   #0A111C;
+    --ember:       #F08236;
+    --ember-pale:  #33200F;
+    --flame:       #F0B455;
+    --flame-light: #2E2410;
+    --ground:      #0E141E;
+    --surface:     #161E2B;
+    --border:      #263042;
+    --nav-bg:      #080D16;
+    --nav-text:    #9AA3B2;
+    --shadow:      0 2px 16px rgba(0,0,0,.45);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink:         #F2ECE4;
+  --ink-muted:   #A99E92;
+  --char-deep:   #0A111C;
+  --ember:       #F08236;
+  --ember-pale:  #33200F;
+  --flame:       #F0B455;
+  --flame-light: #2E2410;
+  --ground:      #0E141E;
+  --surface:     #161E2B;
+  --border:      #263042;
+  --nav-bg:      #080D16;
+  --nav-text:    #9AA3B2;
+  --shadow:      0 2px 16px rgba(0,0,0,.45);
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--ground);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Bitter', Georgia, serif;
+  font-weight: 700;
+  line-height: 1.2;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+a { color: var(--ember); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible { outline: 2px solid var(--flame); outline-offset: 3px; border-radius: 2px; }
+
+p { max-width: 62ch; }
+p + p { margin-top: .9em; }
+
+/* ── Nav ── */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--nav-bg);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.nav-logo {
+  font-family: 'Bitter', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+}
+.nav-logo:hover { text-decoration: none; }
+
+.nav-logo-icon {
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--nav-text);
+  font-size: .9rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: color .15s, background .15s;
+  text-decoration: none;
+}
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  color: #FFFFFF;
+  background: rgba(255,255,255,.08);
+}
+
+.nav-cta {
+  background: var(--ember) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  padding: 7px 16px !important;
+}
+.nav-cta:hover { background: #B8540F !important; }
+
+/* ── Page wrapper ── */
+.page-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 28px 80px;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: transform .12s, box-shadow .12s;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.18); text-decoration: none; }
+.btn:active { transform: none; }
+
+.btn-primary {
+  background: var(--ember);
+  color: #fff;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+}
+.btn-ghost:hover { background: var(--ember-pale); }
+
+/* ── Footer ── */
+.site-footer {
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  padding: 40px 28px;
+  margin-top: 80px;
+  font-size: .88rem;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+.footer-links a {
+  color: var(--nav-text);
+  font-size: .88rem;
+}
+.footer-links a:hover { color: #fff; }
+
+/* ── Utilities ── */
+.eyebrow {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-top: .4em;
+  margin-bottom: 1.1em;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+/* ── Responsive nav ── */
+@media (max-width: 640px) {
+  .nav-links li:not(:last-child) { display: none; }
+  .nav-inner { padding: 0 16px; }
+  .page-content { padding: 0 16px 60px; }
+}
