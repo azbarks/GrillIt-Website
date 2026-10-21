@@ -29,4 +29,7 @@ shared `style.css`, no build step, no JavaScript.
 - Help describes: Prepping → Start → Finish (+ "Forgot to Finish? Enter Cook Time" /
   "Fix Cook Time" / "Set Finish by Cook Time"), two-grill cooks (Finish on / Move Now),
   temperature log, weather, photos (phone size ~100 KB), 1–10 stars, Cook This Again
-  (copies count; clears weight), grill order / default grill, backup merge-by-id.
+  (copies count; clears weight), grill order / default grill, backup merge-by-id,
+  **four tabs** (Cooks · Other Cooks · Grills · Settings), search + **grill and meat filters**,
+  sharing (Share as PDF / Send to a GrillIt User → Other Cooks; Settings → Sharing name).
+- Version 1.1 resubmitted Oct 2026 with sharing — Help/home already describe it.
