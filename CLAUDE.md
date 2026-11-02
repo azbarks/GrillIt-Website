@@ -16,9 +16,10 @@ shared `style.css`, no build step, no JavaScript.
   `#101A28`, ember orange `#D9661A`; Bitter (headings) + Source Sans 3. Light + dark.
 - `images/` — `icon.png` (256, nav + how-it-works), `favicon.png`, `apple-touch-icon.png`
 
-## At release (TODO)
-- `index.html` `#download`: swap the "Coming soon" badge for the real App Store button
-  (commented template is right there), and change the hero tag to "Available now on the App Store".
+## App Store link
+Released Nov 2026 (1.1): **https://apps.apple.com/app/grill-it/id6818903552** — the hero "Download on the App Store" button
+(`#download`). The nav "Download" link on every page goes to `index.html#download`, same as
+PrayIt's site.
 
 ## Keep accurate
 - **Privacy page must match the app.** GrillIt's only network call is the optional
